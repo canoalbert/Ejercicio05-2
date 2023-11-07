@@ -13,9 +13,7 @@ public class Product {
         updateTotal();
     }
 
-    private float updateTotal() {
-        return total = this.quantity;
-    }
+
 
     public String getName() {
         return name;
@@ -23,15 +21,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+        updateTotal();
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+
 
     public float getPrice() {
         return price;
@@ -39,14 +36,20 @@ public class Product {
 
     public void setPrice(float price) {
         this.price = price;
+        updateTotal();
     }
 
     public float getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
-        this.total = total;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        updateTotal();
+    }
+
+    private void updateTotal() {
+        this.total = this.quantity * this.price;
     }
 
     @Override

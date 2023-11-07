@@ -3,10 +3,12 @@ package alberto.cano.ejercicio05_2;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,11 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 
+import alberto.cano.ejercicio05_2.adapters.ProductsAdapter;
 import alberto.cano.ejercicio05_2.databinding.ActivityMainBinding;
 import alberto.cano.ejercicio05_2.modelos.Product;
 
-import android.view.Menu;
-import android.view.MenuItem;
+
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +29,14 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-
     private ActivityMainBinding binding;
     private ArrayList<Product> productList;
+
+    private ProductsAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+
+    public MainActivity(){
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
         productList = new ArrayList<>();
 
+        adapter = new ProductsAdapter(productList, R.layout.product_view_holder, MainActivity.this);
+        layoutManager = new GridLayoutManager(this, 2);
+        binding.contentMain.container.setAdapter(adapter);
+        binding.contentMain.container.setLayoutManager(layoutManager);
 
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (txtName.getText().toString().isEmpty() || txtQuantity.getText().toString().isEmpty() || txtPrice.getText().toString().isEmpty()){
+                if (txtName.getText().toString().isEmpty() ||
+                        txtQuantity.getText().toString().isEmpty() ||
+                        txtPrice.getText().toString().isEmpty()){
                     Toast.makeText(MainActivity.this, "Missing data", Toast.LENGTH_SHORT).show();
                 }else {
                     Product product = new Product(
@@ -108,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
                             Float.parseFloat(txtPrice.getText().toString())
                     );
                     productList.add(0,product);
-                    Toast.makeText(MainActivity.this, product.toString(), Toast.LENGTH_SHORT).show();
+                    adapter.notifyItemInserted(0);
+                    //Toast.makeText(MainActivity.this, product.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
