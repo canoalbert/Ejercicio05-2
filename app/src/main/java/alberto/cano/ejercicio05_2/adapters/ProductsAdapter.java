@@ -36,15 +36,15 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull ProductVH holder, int position) {
         Product product = objects.get(position);
-
+        holder.lbName.setText(product.getName());
         holder.lbQuantity.setText(String.valueOf(product.getQuantity()));
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-                objects.remove(product);
-                notifyItemRemoved(holder.getAdapterPosition());
+
+                confirmDekete(product).show();
             }
         });
     }
