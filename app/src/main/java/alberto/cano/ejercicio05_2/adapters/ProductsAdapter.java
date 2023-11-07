@@ -44,6 +44,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             @Override
             public void onClick(View v) {
 
+
                 confirmDekete(product).show();
             }
         });
