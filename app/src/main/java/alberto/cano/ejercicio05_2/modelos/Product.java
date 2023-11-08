@@ -1,6 +1,8 @@
 package alberto.cano.ejercicio05_2.modelos;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private  String name;
     private  int quantity;
     private float price;

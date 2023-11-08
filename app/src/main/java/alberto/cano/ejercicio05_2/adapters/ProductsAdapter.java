@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -60,15 +61,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                confirmUpdate(product).show;
+            public void onClick(View v) {confirmUpdate(product);
             }
         });
     }
 
     private AlertDialog confirmUpdate(Product product){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("CONFIRM UPDATE");
+        builder.setTitle(R.string.update);
         //No se cierra al hacer click fuera
         builder.setCancelable(false);
 
@@ -111,7 +111,21 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         txtQuantity.addTextChangedListener(textWatcher);
         txtPrice.addTextChangedListener(textWatcher);
 
-        builder.setNegativeButton();
+        builder.setNegativeButton("CANCEL", null);
+        builder.setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (txtQuantity.getText().toString().isEmpty() ||
+                txtPrice.getText().toString().isEmpty()){
+                    Toast.makeText(context, "  MISSING DATA", Toast.LENGTH_SHORT).show();
+                }else {
+                    product.setQuantity(Integer.parseInt(txtQuantity.getText().toString()));
+                    product.setPrice(Float.parseFloat(txtPrice.getText().toString()));
+                    notifyItemChanged(objects.indexOf(product));
+                }
+            }
+        });
+        return builder.create();
     }
 
     private AlertDialog confirmDelete(Product product){
